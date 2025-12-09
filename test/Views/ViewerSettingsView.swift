@@ -5,7 +5,7 @@ struct ViewerSettingsView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Viewer Settings")
+            Text("뷰어 설정")
                 .font(.headline)
                 .padding(.top)
             
@@ -13,7 +13,7 @@ struct ViewerSettingsView: View {
             
             // Font Size
             VStack(alignment: .leading) {
-                Text("Font Size: \(settings.fontSize)%")
+                Text("글자 크기: \(settings.fontSize)%")
                 HStack {
                     Button(action: { if settings.fontSize > 50 { settings.fontSize -= 10 } }) {
                         Image(systemName: "textformat.size.smaller")
@@ -31,8 +31,8 @@ struct ViewerSettingsView: View {
             
             // Theme
             VStack(alignment: .leading) {
-                Text("Theme")
-                Picker("Theme", selection: $settings.theme) {
+                Text("테마")
+                Picker("테마", selection: $settings.theme) {
                     ForEach(ViewerTheme.allCases) { theme in
                         Text(theme.rawValue).tag(theme)
                     }
@@ -43,8 +43,8 @@ struct ViewerSettingsView: View {
             
             // Font
             VStack(alignment: .leading) {
-                Text("Font")
-                Picker("Font", selection: $settings.font) {
+                Text("글꼴")
+                Picker("글꼴", selection: $settings.font) {
                     ForEach(ViewerFont.allCases) { font in
                         Text(font.rawValue).tag(font)
                     }

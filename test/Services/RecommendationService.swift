@@ -8,10 +8,12 @@ struct RecommendedBook: Identifiable, Codable {
     let description: String
     let reason: String
     let genre: String
+    let imageURL: String?
+    let purchaseURL: String?
     
     // Exclude 'id' from JSON decoding since API doesn't provide it
     enum CodingKeys: String, CodingKey {
-        case title, author, description, reason, genre
+        case title, author, description, reason, genre, imageURL, purchaseURL
     }
 }
 
@@ -37,9 +39,33 @@ class RecommendationService: ObservableObject {
             if books.isEmpty {
                 // Cold start: Recommend popular books
                 let defaultRecommendations = [
-                    RecommendedBook(title: "The Great Gatsby", author: "F. Scott Fitzgerald", description: "A classic novel of the Jazz Age.", reason: "많은 독자들이 사랑하는 고전 명작입니다.", genre: "Classic"),
-                    RecommendedBook(title: "1984", author: "George Orwell", description: "A dystopian social science fiction novel.", reason: "디스토피아 장르의 대표작입니다.", genre: "Sci-Fi"),
-                    RecommendedBook(title: "Sapiens", author: "Yuval Noah Harari", description: "A brief history of humankind.", reason: "인류의 역사를 통찰력 있게 다룬 베스트셀러입니다.", genre: "History")
+                    RecommendedBook(
+                        title: "위대한 개츠비",
+                        author: "F. Scott Fitzgerald",
+                        description: "재즈 시대를 배경으로 한 고전 명작",
+                        reason: "많은 독자들이 사랑하는 미국 문학의 걸작입니다.",
+                        genre: "고전문학",
+                        imageURL: "https://image.aladin.co.kr/product/293/61/cover/8937460788_1.jpg",
+                        purchaseURL: "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=위대한+개츠비"
+                    ),
+                    RecommendedBook(
+                        title: "1984",
+                        author: "George Orwell",
+                        description: "디스토피아 소설의 대표작",
+                        reason: "현대 사회를 되돌아보게 하는 통찰력 있는 작품입니다.",
+                        genre: "SF",
+                        imageURL: "https://image.aladin.co.kr/product/2893/41/cover/8949121018_1.jpg",
+                        purchaseURL: "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=1984"
+                    ),
+                    RecommendedBook(
+                        title: "사피엔스",
+                        author: "유발 하라리",
+                        description: "인류의 역사와 미래에 대한 통찰",
+                        reason: "인류의 역사를 새로운 관점에서 바라볼 수 있는 베스트셀러입니다.",
+                        genre: "역사",
+                        imageURL: "https://image.aladin.co.kr/product/6935/32/cover/8934972467_1.jpg",
+                        purchaseURL: "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=사피엔스"
+                    )
                 ]
                 self.recommendations = defaultRecommendations
                 self.isLoading = false
@@ -56,14 +82,20 @@ class RecommendationService: ObservableObject {
             다음 JSON 형식으로 응답해주세요:
             [
                 {
-                    "title": "책 제목",
+                    "title": "책 제목 (한국어)",
                     "author": "저자",
-                    "description": "간단한 책 설명",
+                    "description": "간단한 책 설명 (2-3문장)",
                     "reason": "추천 이유 (한국어로, '회원님이 읽으신 ...과 비슷하여' 형식)",
-                    "genre": "장르"
+                    "genre": "장르 (한국어)",
+                    "imageURL": "https://image.aladin.co.kr/product/... (알라딘 책 표지 이미지 URL)",
+                    "purchaseURL": "https://www.aladin.co.kr/search/... (알라딘 검색 링크)"
                 }
             ]
-            JSON 외의 다른 텍스트는 포함하지 마세요.
+            
+            주의사항:
+            - imageURL은 알라딘(aladin.co.kr)의 실제 책 표지 이미지 URL을 제공해주세요
+            - purchaseURL은 알라딘 검색 링크 형식으로 제공해주세요: https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=책제목
+            - JSON 외의 다른 텍스트는 포함하지 마세요
             """
             
             // 3. Call Gemini API

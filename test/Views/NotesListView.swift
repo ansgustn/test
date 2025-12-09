@@ -2,9 +2,9 @@ import SwiftUI
 import CoreData
 
 enum GroupBy: String, CaseIterable, Identifiable {
-    case none = "None"
-    case book = "Book"
-    case date = "Date"
+    case none = "없음"
+    case book = "책별"
+    case date = "날짜별"
     
     var id: String { self.rawValue }
 }
@@ -22,17 +22,17 @@ struct NotesListView: View {
                 FilteredNotesList(filter: searchText, tags: selectedTags, groupBy: groupBy)
             }
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .navigationTitle("My Highlights")
+            .navigationTitle("내 하이라이트")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        Picker("Group By", selection: $groupBy) {
+                        Picker("그룹화", selection: $groupBy) {
                             ForEach(GroupBy.allCases) { option in
                                 Text(option.rawValue).tag(option)
                             }
                         }
                     } label: {
-                        Label("Sort", systemImage: "arrow.up.arrow.down")
+                        Label("정렬", systemImage: "arrow.up.arrow.down")
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -75,7 +75,7 @@ struct FilteredNotesList: View {
     var body: some View {
         List {
             if highlights.isEmpty {
-                Text("No highlights found")
+                Text("하이라이트가 없습니다")
                     .foregroundColor(.secondary)
                     .padding()
             } else {

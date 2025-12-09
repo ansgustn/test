@@ -7,29 +7,29 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section(header: Text("General")) {
+                Section(header: Text("일반")) {
                     HStack {
-                        Text("Version")
+                        Text("버전")
                         Spacer()
                         Text("1.0.0")
                             .foregroundStyle(.secondary)
                     }
                 }
                 
-                Section(header: Text("Data")) {
-                    Button("Reset All Data", role: .destructive) {
+                Section(header: Text("데이터")) {
+                    Button("모든 데이터 초기화", role: .destructive) {
                         showResetAlert = true
                     }
                 }
             }
-            .navigationTitle("Settings")
-            .alert("Reset All Data", isPresented: $showResetAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Reset", role: .destructive) {
+            .navigationTitle("설정")
+            .alert("모든 데이터 초기화", isPresented: $showResetAlert) {
+                Button("취소", role: .cancel) { }
+                Button("초기화", role: .destructive) {
                     resetAllData()
                 }
             } message: {
-                Text("This will delete all your highlights, notes, and reading history. This action cannot be undone.")
+                Text("모든 하이라이트, 메모, 독서 기록이 삭제됩니다. 이 작업은 취소할 수 없습니다.")
             }
         }
     }

@@ -6,7 +6,7 @@ struct RecommendationView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("Today's Recommendations")
+                Text("오늘의 추천 도서")
                     .font(.title2)
                     .fontWeight(.bold)
                 
@@ -28,11 +28,11 @@ struct RecommendationView: View {
             
             if recommendationService.recommendations.isEmpty {
                 if recommendationService.isLoading {
-                    Text("Analyzing your reading history...")
+                    Text("독서 이력 분석 중...")
                         .foregroundStyle(.secondary)
                         .padding()
                 } else {
-                    Text("Tap refresh to get recommendations")
+                    Text("새로고침을 눌러 추천을 받으세요")
                         .foregroundStyle(.secondary)
                         .padding()
                 }
@@ -59,19 +59,33 @@ struct RecommendationView: View {
 
 struct RecommendationCard: View {
     let book: RecommendedBook
+    @State private var showingDetail = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Cover Placeholder
-            Rectangle()
-                .fill(Color.blue.opacity(0.1))
-                .frame(height: 140)
-                .overlay(
-                    Image(systemName: "book.fill")
-                        .font(.largeTitle)
-                        .foregroundStyle(.blue)
-                )
-                .cornerRadius(8)
+            // Cover Image
+            if let imageURL = book.imageURL, let url = URL(string: imageURL) {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(height: 140)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 140)
+                            .clipped()
+                            .cornerRadius(8)
+                    case .failure:
+                        placeholderCover
+                    @unknown default:
+                        placeholderCover
+                    }
+                }
+            } else {
+                placeholderCover
+            }
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(book.title)
@@ -93,21 +107,37 @@ struct RecommendationCard: View {
             Spacer()
             
             Button(action: {
-                // TODO: Implement book details or search
+                showingDetail = true
             }) {
-                Text("Details")
+                Text("상세보기")
                     .font(.caption)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
                     .background(Color.blue.opacity(0.1))
+                    .foregroundStyle(.blue)
                     .cornerRadius(8)
             }
         }
         .padding()
         .frame(width: 200, height: 320)
-        .background(Color.white)
+        .background(Color(UIColor.systemBackground))
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .sheet(isPresented: $showingDetail) {
+            RecommendedBookDetailView(book: book)
+        }
+    }
+    
+    private var placeholderCover: some View {
+        Rectangle()
+            .fill(Color.blue.opacity(0.1))
+            .frame(height: 140)
+            .overlay(
+                Image(systemName: "book.fill")
+                    .font(.largeTitle)
+                    .foregroundStyle(.blue)
+            )
+            .cornerRadius(8)
     }
 }

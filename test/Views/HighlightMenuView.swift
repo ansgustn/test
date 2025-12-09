@@ -10,7 +10,7 @@ struct HighlightMenuView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Selected Text")
+            Text("선택된 텍스트")
                 .font(.headline)
             
             Text(selectedText)
@@ -24,10 +24,10 @@ struct HighlightMenuView: View {
             
             if isAddingNote {
                 VStack(alignment: .leading) {
-                    Text("Note")
+                    Text("메모")
                         .font(.subheadline)
                     
-                    TextField("Enter your note here...", text: $noteText)
+                    TextField("메모를 입력하세요...", text: $noteText)
                         .textFieldStyle(.roundedBorder)
                         .padding(.bottom)
                     
@@ -35,7 +35,7 @@ struct HighlightMenuView: View {
                         onNote(noteText)
                         dismiss()
                     }) {
-                        Text("Save Note")
+                        Text("메모 저장")
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color.blue)
@@ -45,7 +45,7 @@ struct HighlightMenuView: View {
                 }
             } else {
                 VStack(spacing: 20) {
-                    Text("Highlight Color")
+                    Text("하이라이트 색상")
                         .font(.subheadline)
                     
                     HStack(spacing: 20) {
@@ -72,7 +72,7 @@ struct HighlightMenuView: View {
                             isAddingNote = true
                         }
                     }) {
-                        Label("Add Note", systemImage: "note.text")
+                        Label("메모 추가", systemImage: "note.text")
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color.blue)
@@ -82,7 +82,7 @@ struct HighlightMenuView: View {
                 }
             }
             
-            Button("Cancel") {
+            Button("취소") {
                 dismiss()
             }
             .padding(.bottom)

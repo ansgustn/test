@@ -24,10 +24,10 @@ struct ReaderView: View {
                     )
                     .edgesIgnoringSafeArea(.all)
                 } else {
-                    Text("Error loading chapter")
+                    Text("챕터를 불러올 수 없습니다")
                 }
             } else {
-                ProgressView("Loading Book...")
+                ProgressView("책 불러오는 중...")
             }
         }
         .background(Color(hex: viewModel.settings.theme.backgroundColor))
@@ -134,7 +134,7 @@ struct ReaderView: View {
         .onDisappear {
             StatisticsManager.shared.endSession()
         }
-        .navigationTitle(viewModel.book?.title ?? "Reader")
+        .navigationTitle(viewModel.book?.title ?? "독서")
         .navigationBarTitleDisplayMode(.inline)
     }
     

@@ -6,13 +6,13 @@ struct LibraryGridView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("My Library")
+            Text("내 서재")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.horizontal)
             
             if viewModel.isLoading {
-                ProgressView("Loading Library...")
+                ProgressView("서재 불러오는 중...")
                     .frame(maxWidth: .infinity)
                     .padding()
             } else if viewModel.books.isEmpty {
@@ -20,9 +20,9 @@ struct LibraryGridView: View {
                     Image(systemName: "books.vertical")
                         .font(.system(size: 50))
                         .foregroundStyle(.secondary)
-                    Text("No books yet")
+                    Text("아직 책이 없습니다")
                         .font(.headline)
-                    Text("Tap + to add EPUB folder")
+                    Text("+ 버튼을 눌러 EPUB 폴더를 추가하세요")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -40,7 +40,7 @@ struct LibraryGridView: View {
                                     viewModel.deleteBook(at: IndexSet(integer: index))
                                 }
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("삭제", systemImage: "trash")
                             }
                         }
                     }

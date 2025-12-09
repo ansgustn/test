@@ -5,17 +5,17 @@ struct MainTabView: View {
         TabView {
             LibraryView()
                 .tabItem {
-                    Label("Library", systemImage: "books.vertical")
+                    Label("서재", systemImage: "books.vertical")
                 }
             
             StatsView()
                 .tabItem {
-                    Label("Statistics", systemImage: "chart.bar")
+                    Label("통계", systemImage: "chart.bar")
                 }
             
             SettingsView()
                 .tabItem {
-                    Label("Settings", systemImage: "gear")
+                    Label("설정", systemImage: "gear")
                 }
         }
     }

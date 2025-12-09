@@ -27,6 +27,6 @@ struct Config {
     
     /// Check if API key is configured
     static var isAPIKeyConfigured: Bool {
-        return !geminiAPIKey.isEmpty && geminiAPIKey != "AIzaSyCNEHAvDaVaDRoYgfbUCnStcyk8R4abCnw"
+        return !geminiAPIKey.isEmpty && geminiAPIKey != "YOUR_GEMINI_API_KEY_HERE"
     }
 }

@@ -20,17 +20,17 @@ struct LibraryView: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("Library")
+            .navigationTitle("EPUB 책 리더")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Menu {
-                        Picker("Sort By", selection: $viewModel.sortOption) {
+                        Picker("정렬 기준", selection: $viewModel.sortOption) {
                             ForEach(SortOption.allCases) { option in
                                 Text(option.rawValue).tag(option)
                             }
                         }
                     } label: {
-                        Label("Sort", systemImage: "arrow.up.arrow.down")
+                        Label("정렬", systemImage: "arrow.up.arrow.down")
                     }
                 }
                 

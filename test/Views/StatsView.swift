@@ -12,14 +12,14 @@ struct StatsView: View {
                     // Summary Cards
                     HStack(spacing: 16) {
                         SummaryCard(
-                            title: "Total Time",
+                            title: "총 독서 시간",
                             value: formatTime(statsManager.totalReadingTime),
                             icon: "clock.fill",
                             color: .blue
                         )
                         
                         SummaryCard(
-                            title: "Current Streak",
+                            title: "현재 연속",
                             value: "\(statsManager.currentStreak) 🔥",
                             icon: "flame.fill",
                             color: .orange
@@ -29,7 +29,7 @@ struct StatsView: View {
                     
                     // Streak Section
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Streak Information")
+                        Text("연속 독서 정보")
                             .font(.headline)
                             .padding(.horizontal)
                         
@@ -37,10 +37,10 @@ struct StatsView: View {
                             HStack {
                                 Image(systemName: "flame.fill")
                                     .foregroundStyle(.orange)
-                                Text("Current Streak")
+                                Text("현재 연속 일수")
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                Text("\(statsManager.currentStreak) days")
+                                Text("\(statsManager.currentStreak)일")
                                     .fontWeight(.bold)
                             }
                             
@@ -49,10 +49,10 @@ struct StatsView: View {
                             HStack {
                                 Image(systemName: "star.fill")
                                     .foregroundStyle(.yellow)
-                                Text("Longest Streak")
+                                Text("최장 연속 일수")
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                Text("\(statsManager.longestStreak) days")
+                                Text("\(statsManager.longestStreak)일")
                                     .fontWeight(.bold)
                             }
                         }
@@ -64,7 +64,7 @@ struct StatsView: View {
                     
                     // Weekly Chart
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Weekly Activity")
+                        Text("주간 활동")
                             .font(.headline)
                             .padding(.horizontal)
                         
@@ -86,7 +86,7 @@ struct StatsView: View {
                     
                     // Badges Section
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Badges")
+                        Text("뱃지")
                             .font(.headline)
                             .padding(.horizontal)
                         
@@ -100,11 +100,11 @@ struct StatsView: View {
                     
                     // Recent Books (Placeholder)
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Recent Books")
+                        Text("최근 읽은 책")
                             .font(.headline)
                             .padding(.horizontal)
                         
-                        Text("No recent books")
+                        Text("최근 읽은 책이 없습니다")
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding()
@@ -112,7 +112,7 @@ struct StatsView: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("Statistics")
+            .navigationTitle("독서 통계")
             .onAppear {
                 statsManager.calculateStatistics()
                 loadBadges()
@@ -136,7 +136,7 @@ struct StatsView: View {
     }
     
     private func dayName(for index: Int) -> String {
-        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        let days = ["월", "화", "수", "목", "금", "토", "일"]
         return days[index]
     }
 }

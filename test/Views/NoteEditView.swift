@@ -10,31 +10,31 @@ struct NoteEditView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("Selected Text")) {
+            Section(header: Text("선택된 텍스트")) {
                 Text(highlight.selectedText)
                     .font(.body)
                     .foregroundColor(.primary)
             }
             
-            Section(header: Text("Highlight Color")) {
-                Picker("Color", selection: $selectedColor) {
-                    Text("Yellow").tag("yellow")
-                    Text("Green").tag("green")
-                    Text("Pink").tag("pink")
+            Section(header: Text("하이라이트 색상")) {
+                Picker("색상", selection: $selectedColor) {
+                    Text("노란색").tag("yellow")
+                    Text("초록색").tag("green")
+                    Text("분홍색").tag("pink")
                 }
                 .pickerStyle(.segmented)
             }
             
-            Section(header: Text("Note")) {
+            Section(header: Text("메모")) {
                 TextEditor(text: $noteContent)
                     .frame(minHeight: 100)
             }
         }
-        .navigationTitle("Edit Note")
+        .navigationTitle("메모 편집")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Save") {
+                Button("저장") {
                     saveChanges()
                     dismiss()
                 }
