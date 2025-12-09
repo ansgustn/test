@@ -1,21 +1,14 @@
-//
-//  ContentView.swift
-//  test
-//
-//  Created by dsu_student on 11/18/25.
-//
-
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
+    @State private var showOnboarding = !UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        MainTabView()
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingView(isPresented: $showOnboarding)
+            }
     }
 }
 

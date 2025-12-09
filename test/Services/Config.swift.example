@@ -1,0 +1,32 @@
+import Foundation
+
+struct Config {
+    // MARK: - Gemini API Configuration
+    
+    /// Gemini API Key
+    /// TODO: Replace with your actual API key from https://aistudio.google.com/app/apikey
+    /// 
+    /// 설정 방법:
+    /// 1. https://aistudio.google.com/app/apikey 에서 API Key 발급
+    /// 2. 이 파일을 test/Services/Config.swift 로 복사
+    /// 3. 아래 YOUR_GEMINI_API_KEY_HERE를 발급받은 API Key로 교체
+    static let geminiAPIKey = "YOUR_GEMINI_API_KEY_HERE"
+    
+    /// Gemini API Endpoint
+    /// 
+    /// 무료 버전 사용 시 아래 옵션 중 하나를 선택하세요:
+    /// 
+    /// 옵션 1 (권장): Gemini 2.5 Flash (최신 버전, 빠른 응답, 무료)
+    static let geminiAPIEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    
+    /// 옵션 2: Gemini 1.5 Flash (이전 버전, 빠른 응답, 무료)
+    // static let geminiAPIEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+    
+    /// 옵션 3: Gemini 1.5 Pro (더 정확한 응답, 무료 제한 있음)
+    // static let geminiAPIEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent"
+    
+    /// Check if API key is configured
+    static var isAPIKeyConfigured: Bool {
+        return !geminiAPIKey.isEmpty && geminiAPIKey != "AIzaSyCNEHAvDaVaDRoYgfbUCnStcyk8R4abCnw"
+    }
+}

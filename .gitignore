@@ -1,0 +1,42 @@
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+
+# User settings
+*.xcuserstate
+*.xcuserdatad
+
+# Build generated
+build/
+DerivedData/
+
+# Swift Package Manager
+.swiftpm/
+*.xcodeproj
+
+# CocoaPods
+Pods/
+
+# API Keys (IMPORTANT: Keep API keys secure!)
+test/Services/Config.swift
+
+# macOS
+.DS_Store
+
+# Sample Books (generated at runtime)
+SampleBook/
+test/Resources/
+
+# Build logs
+*.log
+build.log
+
+# Xcode schemes
+*.xcscheme
+
+# CoreData compiled models
+*.momd
+*.mom
