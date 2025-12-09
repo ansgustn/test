@@ -130,14 +130,94 @@ struct RecommendationCard: View {
     }
     
     private var placeholderCover: some View {
-        Rectangle()
-            .fill(Color.blue.opacity(0.1))
-            .frame(height: 140)
-            .overlay(
-                Image(systemName: "book.fill")
-                    .font(.largeTitle)
-                    .foregroundStyle(.blue)
-            )
-            .cornerRadius(8)
+        GeometryReader { geometry in
+            ZStack {
+                // Generate unique color based on book title
+                LinearGradient(
+                    colors: generateBookColors(for: book.title),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                
+                // Book cover design
+                VStack(spacing: 0) {
+                    Spacer()
+                    
+                    // Genre icon at top
+                    genreIcon(for: book.genre)
+                        .font(.system(size: 50))
+                        .foregroundStyle(.white.opacity(0.3))
+                        .padding(.top, 20)
+                    
+                    Spacer()
+                    
+                    // Title section (like real book cover)
+                    VStack(spacing: 6) {
+                        Text(book.title)
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(.white)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(4)
+                            .padding(.horizontal, 16)
+                            .shadow(color: .black.opacity(0.3), radius: 2)
+                        
+                        Rectangle()
+                            .fill(.white.opacity(0.8))
+                            .frame(width: 40, height: 2)
+                            .padding(.vertical, 4)
+                        
+                        Text(book.author)
+                            .font(.system(size: 11))
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 16)
+                    }
+                    .padding(.bottom, 20)
+                }
+                
+                // Decorative border
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(.white.opacity(0.3), lineWidth: 1)
+            }
+        }
+        .frame(height: 140)
+        .cornerRadius(8)
+        .shadow(color: .black.opacity(0.2), radius: 3, x: 0, y: 2)
+    }
+    
+    // Generate unique colors based on title
+    private func generateBookColors(for title: String) -> [Color] {
+        let hash = abs(title.hashValue)
+        let hue = Double(hash % 360) / 360.0
+        let saturation = 0.6 + Double((hash / 360) % 20) / 100.0
+        
+        return [
+            Color(hue: hue, saturation: saturation, brightness: 0.7),
+            Color(hue: hue + 0.1, saturation: saturation - 0.1, brightness: 0.5)
+        ]
+    }
+    
+    // Genre-specific icons
+    private func genreIcon(for genre: String) -> Image {
+        let genreLower = genre.lowercased()
+        
+        if genreLower.contains("역사") || genreLower.contains("history") {
+            return Image(systemName: "clock.fill")
+        } else if genreLower.contains("과학") || genreLower.contains("science") {
+            return Image(systemName: "atom")
+        } else if genreLower.contains("소설") || genreLower.contains("문학") || genreLower.contains("fiction") {
+            return Image(systemName: "text.book.closed.fill")
+        } else if genreLower.contains("sf") || genreLower.contains("공상") {
+            return Image(systemName: "sparkles")
+        } else if genreLower.contains("자기계발") || genreLower.contains("self") {
+            return Image(systemName: "star.fill")
+        } else if genreLower.contains("비즈니스") || genreLower.contains("business") {
+            return Image(systemName: "chart.line.uptrend.xyaxis")
+        } else if genreLower.contains("철학") || genreLower.contains("philosophy") {
+            return Image(systemName: "brain.head.profile")
+        } else {
+            return Image(systemName: "book.closed.fill")
+        }
     }
 }

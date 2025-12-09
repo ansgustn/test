@@ -78,24 +78,24 @@ class RecommendationService: ObservableObject {
             let prompt = """
             사용자가 읽은 책 목록: \(readBooksInfo)
             
-            이 사용자의 취향을 분석하여 읽을만한 책 3권을 추천해주세요.
+            이 사용자의 취향을 분석하여 읽을만한 한국 도서 3권을 추천해주세요.
             다음 JSON 형식으로 응답해주세요:
             [
                 {
-                    "title": "책 제목 (한국어)",
-                    "author": "저자",
-                    "description": "간단한 책 설명 (2-3문장)",
+                    "title": "책 제목 (한국어로 번역된 제목)",
+                    "author": "저자명",
+                    "description": "책 소개 (2-3문장, 한국어)",
                     "reason": "추천 이유 (한국어로, '회원님이 읽으신 ...과 비슷하여' 형식)",
                     "genre": "장르 (한국어)",
-                    "imageURL": "https://image.aladin.co.kr/product/... (알라딘 책 표지 이미지 URL)",
-                    "purchaseURL": "https://www.aladin.co.kr/search/... (알라딘 검색 링크)"
+                    "imageURL": null,
+                    "purchaseURL": null
                 }
             ]
             
             주의사항:
-            - imageURL은 알라딘(aladin.co.kr)의 실제 책 표지 이미지 URL을 제공해주세요
-            - purchaseURL은 알라딘 검색 링크 형식으로 제공해주세요: https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=책제목
-            - JSON 외의 다른 텍스트는 포함하지 마세요
+            - 한국에서 출판된 책이나 한국어로 번역된 유명한 책을 추천하세요
+            - JSON만 반환하고 다른 텍스트는 포함하지 마세요
+            - imageURL과 purchaseURL은 null로 설정하세요 (자동 생성됩니다)
             """
             
             // 3. Call Gemini API
@@ -105,7 +105,40 @@ class RecommendationService: ObservableObject {
             let cleanedJSON = cleanJSONResponse(jsonString)
             
             if let data = cleanedJSON.data(using: String.Encoding.utf8) {
-                let recommendedBooks = try JSONDecoder().decode([RecommendedBook].self, from: data)
+                var recommendedBooks = try JSONDecoder().decode([RecommendedBook].self, from: data)
+                
+                // Fetch real book covers from Google Books API
+                for i in 0..<recommendedBooks.count {
+                    let book = recommendedBooks[i]
+                    
+                    // Fetch book cover image
+                    if let coverURL = await BookCoverService.shared.fetchBookCover(title: book.title, author: book.author) {
+                        recommendedBooks[i] = RecommendedBook(
+                            title: book.title,
+                            author: book.author,
+                            description: book.description,
+                            reason: book.reason,
+                            genre: book.genre,
+                            imageURL: coverURL,
+                            purchaseURL: book.purchaseURL
+                        )
+                    }
+                    
+                    // Generate purchase URL if missing
+                    if recommendedBooks[i].purchaseURL == nil || recommendedBooks[i].purchaseURL?.isEmpty == true {
+                        let encodedTitle = book.title.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? book.title
+                        recommendedBooks[i] = RecommendedBook(
+                            title: recommendedBooks[i].title,
+                            author: recommendedBooks[i].author,
+                            description: recommendedBooks[i].description,
+                            reason: recommendedBooks[i].reason,
+                            genre: recommendedBooks[i].genre,
+                            imageURL: recommendedBooks[i].imageURL,
+                            purchaseURL: "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=All&SearchWord=\(encodedTitle)"
+                        )
+                    }
+                }
+                
                 self.recommendations = recommendedBooks
                 self.isLoading = false
             }
